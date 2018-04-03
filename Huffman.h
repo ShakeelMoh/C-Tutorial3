@@ -6,6 +6,7 @@
 #include<vector>
 #include <unordered_map>
 #include <queue>
+#include <memory>
 
 using namespace std;
 
@@ -15,12 +16,12 @@ class HuffmanNode{
       int frequency;
       char charLetter;
       
-      HuffmanNode *left;
-      HuffmanNode *right;
+      shared_ptr<HuffmanNode> left;
+      shared_ptr<HuffmanNode> right;
       
 
    public:
-      HuffmanNode(int freq, char letter, HuffmanNode * l, HuffmanNode * r);
+      HuffmanNode(int freq, char letter, shared_ptr<HuffmanNode> l, shared_ptr<HuffmanNode> r);
       void getContents();
       int getFrequency() const;
       char getLetter();

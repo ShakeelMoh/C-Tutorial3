@@ -10,6 +10,7 @@
 
 using namespace std;
 
+
 //Count occurences of letter
 void MHMSHA056::countLetters(unordered_map<char, int> &letterFreq, string inputFile){
 
@@ -47,7 +48,7 @@ void MHMSHA056::countLetters(unordered_map<char, int> &letterFreq, string inputF
 
 
 //Constructor
-HuffmanNode::HuffmanNode(int freq, char letter, HuffmanNode * l, HuffmanNode * r){
+HuffmanNode::HuffmanNode(int freq, char letter, shared_ptr<HuffmanNode> l, shared_ptr<HuffmanNode> r){
 
    frequency = freq;
    charLetter = letter;
@@ -87,10 +88,19 @@ void HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHM
    while (pq.size() > 1){
    
       HuffmanNode node1 = pq.top();
+      shared_ptr<HuffmanNode> node1Ptr(new HuffmanNode(node1.HuffmanNode::getFrequency(), node1.HuffmanNode::getLetter(), nullptr, nullptr));
+      //HuffmanNode * node1Ptr = node1;
       pq.pop();
       HuffmanNode node2 = pq.top();
+      shared_ptr<HuffmanNode> node2Ptr(new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), nullptr, nullptr));
+      //HuffmanNode * node2Ptr = node2
       pq.pop();
-      //shared_ptr<HuffmanNode> newNode(new HuffmanNode(node1.HuffmanNode::getFrequency() + node2.HuffmanNode::getFrequency(),node1, node2);
+      int sum = node1.HuffmanNode::getFrequency() + node2.HuffmanNode::getFrequency();
+      //cout << sum << " is the sum";
+      shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node1Ptr, node2Ptr));
+      //cout << "sum of contents is \n";
+      //newNode->HuffmanNode::getContents();
+      
       /*
       cout << "Node 1:";
       node1.HuffmanNode::getContents();
@@ -98,5 +108,5 @@ void HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHM
       node2.HuffmanNode::getContents();
       cout << "\n";
       */
-}
+   }
 }
