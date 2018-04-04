@@ -70,7 +70,7 @@ bool MHMSHA056::Comp::operator()(const HuffmanNode &a, const HuffmanNode &b){
 //toString for node
 void HuffmanNode::getContents(){
 
-   cout << "Contents of node is " << charLetter << " : " << frequency << "\n";
+   cout << "Contents of node is " << charLetter << ": " << frequency << "\n";
 
 }
 
@@ -82,8 +82,27 @@ char HuffmanNode::getLetter(){
    return charLetter;
 }
 
-void HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHMSHA056::Comp>& pq){
-   cout << "Building tree";
+//Returns left node
+shared_ptr<HuffmanNode> HuffmanNode::getLeftNode(){
+   cout << "Left node contents is " << "\n";
+   left->HuffmanNode::getContents();
+   return left;
+}
+//Returns right node
+shared_ptr<HuffmanNode> HuffmanNode::getRightNode(){
+   cout << "Right node contents is " << "\n";
+   right->HuffmanNode::getContents();
+   return right;
+}
+//Builds code table
+void HuffmanTree::buildCodeTable(HuffmanNode root){
+   cout << "Building code table";
+
+}
+
+
+HuffmanNode HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHMSHA056::Comp>& pq){
+   cout << "Building tree" << "\n";
 
    while (pq.size() > 1){
    
@@ -95,9 +114,27 @@ void HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHM
       shared_ptr<HuffmanNode> node2Ptr(new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), nullptr, nullptr));
       //HuffmanNode * node2Ptr = node2
       pq.pop();
-      int sum = node1.HuffmanNode::getFrequency() + node2.HuffmanNode::getFrequency();
-      //cout << sum << " is the sum";
-      shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node1Ptr, node2Ptr));
+      int freq1 = node1.HuffmanNode::getFrequency();
+      int freq2 = node2.HuffmanNode::getFrequency();
+      int sum = freq1 + freq2;      //cout << sum << " is the sum";
+      
+      //Create parent node and give it its children. Smaller node on left
+      if (freq1 <= freq2){
+         shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node1Ptr, node2Ptr));
+         cout << "Created node with sum and children " << "\n";
+         cout << "Sum: " << newNode->getFrequency() << "\n";
+         node1Ptr->getContents();
+         node2Ptr->getContents();
+         pq.push(*newNode);
+      } else {
+         shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node2Ptr, node1Ptr));
+         cout << "Created node with children " << "\n";
+         cout << newNode->getFrequency();
+         node1Ptr->getContents();
+         node2Ptr->getContents();
+         pq.push(*newNode);
+      }
+      
       //cout << "sum of contents is \n";
       //newNode->HuffmanNode::getContents();
       
@@ -108,5 +145,10 @@ void HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHM
       node2.HuffmanNode::getContents();
       cout << "\n";
       */
+      
+      
    }
+   HuffmanNode finalNode = pq.top();
+   //finalNode.HuffmanNode::getContents();
+   return finalNode;
 }

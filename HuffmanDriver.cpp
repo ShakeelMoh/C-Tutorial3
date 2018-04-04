@@ -52,15 +52,17 @@ int main (int argc, char *argv[]) {
       int frequency = it -> second;
 
       //Create node for each letter
+      if (frequency > 0){
+         shared_ptr<HuffmanNode> node(new HuffmanNode(frequency, letter, nullptr, nullptr));
+         nodes.push_back(node); //add node to vector
+         //cout << "Pushing node onto queue" << "\n";
+         //node->HuffmanNode::getContents();
       
-      shared_ptr<HuffmanNode> node(new HuffmanNode(frequency, letter, nullptr, nullptr));
+         //Add to priority queue
+         pq.push(*node);
+      }
       
-      nodes.push_back(node); //add node to vector
-      //cout << "Pushing node onto queue" << "\n";
-      //node->HuffmanNode::getContents();
       
-      //Add to priority queue
-      pq.push(*node);
 
    }
    
@@ -78,8 +80,14 @@ int main (int argc, char *argv[]) {
    
    HuffmanTree tree;
    
-   tree.HuffmanTree::buildTree(pq);
+   HuffmanNode finalNode = tree.HuffmanTree::buildTree(pq);
+   cout << "\nFinal Node Contents:" << "\n";
+   finalNode.HuffmanNode::getContents();
    
+   //finalNode.HuffmanNode::getLeftNode();
+   //finalNode.HuffmanNode::getRightNode();
+
+   tree.HuffmanTree::buildCodeTable(finalNode, pq);
    
    return 0;
 
