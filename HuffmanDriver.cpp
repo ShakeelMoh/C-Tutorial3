@@ -87,7 +87,7 @@ int main (int argc, char *argv[]) {
    //finalNode.HuffmanNode::getLeftNode();
    //finalNode.HuffmanNode::getRightNode();
 
-   tree.HuffmanTree::buildCodeTable(finalNode, pq);
+   tree.HuffmanTree::buildCodeTable(finalNode);
    
    return 0;
 

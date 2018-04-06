@@ -28,6 +28,8 @@ class HuffmanNode{
       void addToVector();
       shared_ptr<HuffmanNode> getLeftNode();
       shared_ptr<HuffmanNode> getRightNode();
+      shared_ptr<HuffmanNode> getL();
+      shared_ptr<HuffmanNode> getR();
       
       
       
@@ -50,6 +52,7 @@ class HuffmanTree{
    public:
       HuffmanNode buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHMSHA056::Comp>& pq);
       void buildCodeTable(HuffmanNode root);
+      void printLeafNodes(HuffmanNode root);
 
 };
 

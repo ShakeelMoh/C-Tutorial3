@@ -88,6 +88,12 @@ shared_ptr<HuffmanNode> HuffmanNode::getLeftNode(){
    left->HuffmanNode::getContents();
    return left;
 }
+shared_ptr<HuffmanNode> HuffmanNode::getL(){
+   return left;
+}
+shared_ptr<HuffmanNode> HuffmanNode::getR(){
+   return right;
+}
 //Returns right node
 shared_ptr<HuffmanNode> HuffmanNode::getRightNode(){
    cout << "Right node contents is " << "\n";
@@ -96,8 +102,33 @@ shared_ptr<HuffmanNode> HuffmanNode::getRightNode(){
 }
 //Builds code table
 void HuffmanTree::buildCodeTable(HuffmanNode root){
-   cout << "Building code table";
+   cout << "Building code table" << "\n" << "\n";
+   
+   //left.HuffmanNode::getLeftNode();
+   cout << "PRINTING ALL LEAF NODES" << "\n";
+   HuffmanTree::printLeafNodes(root);
+   
 
+}
+
+void HuffmanTree::printLeafNodes(HuffmanNode root){
+   //if node is leaf node, print its data
+   
+   if (!root.HuffmanNode::getL() && !root.HuffmanNode::getR()){
+      cout << "\nLeaf node data" << "\n";
+      root.HuffmanNode::getContents();
+      return;
+   }
+   //if left child exists check recursively
+   if (root.HuffmanNode::getL()){
+      HuffmanTree::printLeafNodes(*root.HuffmanNode::getL());
+   }
+   //if right child exists check recursively
+   if (root.HuffmanNode::getR()){
+      HuffmanTree::printLeafNodes(*root.HuffmanNode::getR());
+   }
+   
+   
 }
 
 
@@ -107,11 +138,50 @@ HuffmanNode HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNod
    while (pq.size() > 1){
    
       HuffmanNode node1 = pq.top();
-      shared_ptr<HuffmanNode> node1Ptr(new HuffmanNode(node1.HuffmanNode::getFrequency(), node1.HuffmanNode::getLetter(), nullptr, nullptr));
+      shared_ptr<HuffmanNode> node1Ptr;
+      if (node1.getL() || node1.getR()){
+         cout << "Created node with children!" << "\n";
+         node1.HuffmanNode::getContents();
+         shared_ptr<HuffmanNode> node1Ptr1 (new HuffmanNode(node1.HuffmanNode::getFrequency(), node1.HuffmanNode::getLetter(), node1.getLeftNode(), node1.getRightNode()));
+          node1Ptr = node1Ptr1;
+         cout << "\n";
+      } else {
+         cout << "Creating brand new node..." << "\n";
+         shared_ptr<HuffmanNode> node1Ptr1 (new HuffmanNode(node1.HuffmanNode::getFrequency(), node1.HuffmanNode::getLetter(), nullptr, nullptr));
+         node1Ptr = node1Ptr1;
+      }
+   
+      //shared_ptr<HuffmanNode> node1Ptr(new HuffmanNode(node1.HuffmanNode::getFrequency(), node1.HuffmanNode::getLetter(), nullptr, nullptr));
+      //node1Ptr->HuffmanNode::getContents();
       //HuffmanNode * node1Ptr = node1;
       pq.pop();
       HuffmanNode node2 = pq.top();
-      shared_ptr<HuffmanNode> node2Ptr(new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), nullptr, nullptr));
+      
+      shared_ptr<HuffmanNode> node2Ptr;
+      if (node2.getL() || node2.getR()){
+         cout << "Created node with children!" << "\n";
+         node2.HuffmanNode::getContents();
+         shared_ptr<HuffmanNode> node2Ptr2 (new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), node2.getLeftNode(), node2.getRightNode()));
+          node2Ptr = node2Ptr2;
+         cout << "\n";
+      } else {
+         cout << "Creating brand new node..." << "\n";
+         shared_ptr<HuffmanNode> node2Ptr2 (new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), nullptr, nullptr));
+         node2Ptr = node2Ptr2;
+      }
+      /*
+      if (node2.getL() == nullptr){
+         cout << "We have a null ptr here 2!" << "\n";
+         node2.HuffmanNode::getContents();
+      } else {
+         cout << "Created node with children!";
+         node1.HuffmanNode::getContents();
+         cout << "\n";
+      }
+      */
+      //shared_ptr<HuffmanNode> node2Ptr(new HuffmanNode(node2.HuffmanNode::getFrequency(), node2.HuffmanNode::getLetter(), nullptr, nullptr));
+      
+      //node2Ptr->HuffmanNode::getContents();
       //HuffmanNode * node2Ptr = node2
       pq.pop();
       int freq1 = node1.HuffmanNode::getFrequency();
@@ -121,17 +191,29 @@ HuffmanNode HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNod
       //Create parent node and give it its children. Smaller node on left
       if (freq1 <= freq2){
          shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node1Ptr, node2Ptr));
-         cout << "Created node with sum and children " << "\n";
-         cout << "Sum: " << newNode->getFrequency() << "\n";
-         node1Ptr->getContents();
-         node2Ptr->getContents();
+         /*
+         if (newNode->HuffmanNode::getLeftNode()){
+            cout << "Combined node left contents" << "\n";
+            newNode->HuffmanNode::getLeftNode();
+         }
+         */
+         //cout << "Created node with sum and children " << "\n";
+         //cout << "Sum: " << newNode->getFrequency() << "\n";
+         //node1Ptr->getContents();
+         //node2Ptr->getContents();
          pq.push(*newNode);
       } else {
          shared_ptr<HuffmanNode> newNode(new HuffmanNode(sum, ' ', node2Ptr, node1Ptr));
-         cout << "Created node with children " << "\n";
-         cout << newNode->getFrequency();
-         node1Ptr->getContents();
-         node2Ptr->getContents();
+         /*
+         if (newNode->HuffmanNode::getLeftNode()){
+            cout << "Combined node left contents" << "\n";
+            newNode->HuffmanNode::getLeftNode();
+         }
+         */
+         //cout << "Created node with children " << "\n";
+         //cout << newNode->getFrequency();
+         //node1Ptr->getContents();
+         //node2Ptr->getContents();
          pq.push(*newNode);
       }
       
@@ -150,5 +232,13 @@ HuffmanNode HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNod
    }
    HuffmanNode finalNode = pq.top();
    //finalNode.HuffmanNode::getContents();
+   
+   //cout << "CHECKING ROOT LEFT NODES\n";
+   //shared_ptr<HuffmanNode> leftN = finalNode.HuffmanNode::getLeftNode();
+   //leftN->getLeftNode();
+   
+   //Tree recusion must be done here else all pointers go out of scope
+  
+   
    return finalNode;
 }
