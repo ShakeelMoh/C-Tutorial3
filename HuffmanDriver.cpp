@@ -88,7 +88,8 @@ int main (int argc, char *argv[]) {
    //finalNode.HuffmanNode::getRightNode();
 
    tree.HuffmanTree::buildCodeTable(finalNode);
-   
+   tree.HuffmanTree::printCodeTable(outputFile);
+   tree.HuffmanTree::outputCompressedFile(outputFile, inputFile);
    return 0;
 
 }

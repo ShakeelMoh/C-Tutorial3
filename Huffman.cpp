@@ -7,6 +7,7 @@
 #include <queue>
 #include <memory>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
@@ -111,26 +112,78 @@ void HuffmanTree::buildCodeTable(HuffmanNode root){
 
 }
 
+//Level is how deep recursion process is
 void HuffmanTree::printLeafNodes(HuffmanNode root){
+   level++;
    //if node is leaf node, print its data
-   
    if (!root.HuffmanNode::getL() && !root.HuffmanNode::getR()){
       cout << "\nLeaf node data" << "\n";
       root.HuffmanNode::getContents();
+      cout << code << "\n";
+      letters.push_back(root.HuffmanNode::getLetter());
+      codes.push_back(code);
+      code = code.substr(0, code.size()-1);
+      level--;
       return;
    }
    //if left child exists check recursively
    if (root.HuffmanNode::getL()){
+      code = code + "0";
       HuffmanTree::printLeafNodes(*root.HuffmanNode::getL());
+      
    }
    //if right child exists check recursively
    if (root.HuffmanNode::getR()){
+      code = code + "1";
       HuffmanTree::printLeafNodes(*root.HuffmanNode::getR());
+   }
+   code = code.substr(0, code.size()-1);
+}
+
+void HuffmanTree::printCodeTable(string outputFile){
+   cout << "\n\nPRINTING CODE TABLE TO TEXT FILE\n";
+   ofstream output;
+   output.open(outputFile + ".hdr");
+   output << "Count " << letters.size() << "\n";
+   for (int i = 0; i < letters.size(); i++){
+      
+      output << letters[i] << " = ";
+      output << codes[i] << "\n";
+      //cout << "Letter: " << letters[i] << "\n";
+      //cout << "Code: " << codes[i] << "\n";
+   }
+   
+}
+
+void HuffmanTree::outputCompressedFile(string outputFile, string inputFile){
+   cout << "\nCOMPRESSING TEXT FILE TO " << outputFile << "\n"; 
+   
+   ifstream inFile; //get txt file
+   inFile.open(inputFile);
+   
+   if (!inFile){ //while next line
+      cerr << "Unable to open file";       
+   }
+   
+   ofstream output;
+   output.open(outputFile);
+   
+   string line;
+
+   while(getline(inFile, line)){
+   //cout << "Current line is " << line;
+      char currentLetter; //current letter
+      
+      for(int i = 0; i < line.length(); ++i)
+      {
+         currentLetter = line[i]; // select one letter/number at a time from string line.
+         int pos = distance(letters.begin(), std::find(letters.begin(), letters.end(), currentLetter));
+         output << codes[pos];
+      }
    }
    
    
 }
-
 
 HuffmanNode HuffmanTree::buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHMSHA056::Comp>& pq){
    cout << "Building tree" << "\n";

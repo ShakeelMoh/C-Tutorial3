@@ -48,11 +48,16 @@ namespace MHMSHA056{
 class HuffmanTree{
 
    private:
-   
+      string code = "";
+      int level = -1;
+      vector<char> letters;
+      vector<string> codes;
    public:
       HuffmanNode buildTree(priority_queue<HuffmanNode, vector<HuffmanNode>, MHMSHA056::Comp>& pq);
       void buildCodeTable(HuffmanNode root);
       void printLeafNodes(HuffmanNode root);
+      void printCodeTable(string outputFile);
+      void outputCompressedFile(string outputFile, string inputFile);
 
 };
 
